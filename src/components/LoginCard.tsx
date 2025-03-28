@@ -3,15 +3,15 @@ import { ErrorComp } from "./Error";
 import * as yup from "yup";
 import { AuthorizeLogin } from "../db/userAuth";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import {ClipLoader, SyncLoader} from "react-spinners"
+import {ClipLoader} from "react-spinners"
 
 const LoginCard = () => {
 
     const navigate = useNavigate()
     const [errors, setErrors] = useState<Record<string,string>>({});
     const [isAuthenticating, setIsauthenticating] = useState(false)
-    const [searchparams] = useSearchParams();
-    const longUrl = searchparams.get("createNew");
+    const [searchParams] = useSearchParams();
+    const longUrl = searchParams.get("createNew");
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -25,7 +25,7 @@ const LoginCard = () => {
 
     async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        console.log(formData);
+        // console.log(formData);
 
         setErrors({});
         try {
@@ -37,7 +37,6 @@ const LoginCard = () => {
             
             await inputSchema.validate(formData, {abortEarly:false})
             const response = await AuthorizeLogin(formData);
-            setIsauthenticating(false)
             console.log(response);
             if(longUrl) navigate(`/dashboard?createNew=${longUrl}`);
             else navigate("/dashboard")
@@ -51,7 +50,7 @@ const LoginCard = () => {
                 })
                 setErrors(newErrors);
             }
-            setErrors({"authError" : "Invalid credentials"});
+            else setErrors({"authError" : "Invalid credentials"});
         }finally{
             setIsauthenticating(false)
         }
@@ -65,12 +64,14 @@ const LoginCard = () => {
             <div className="text-center">{errors.authError && <ErrorComp message={errors.authError} />}</div>
             <input
                 name="email"
+                value={formData.email}
                 onChange={handleInputChange}
                 className="w-full border border-gray-800 py-3 px-6 rounded"
                 type="email" placeholder='email' />
             {errors.email && <ErrorComp message={errors.email} />}
             <input
                 name="password"
+                value={formData.password}
                 onChange={handleInputChange}
                 className="w-full border border-gray-800 py-3 px-6 rounded"
                 type="password" placeholder='password' />

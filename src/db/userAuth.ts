@@ -16,3 +16,12 @@ export async function AuthorizeLogin({email,password}:loginProps){
 
     return data;
 }
+
+
+export async function getCurrentUser(){
+    const {data, error} = await supabase.auth.getSession();
+    if(!data.session) return null;                        
+    if(error) throw new Error(error.message);
+    return data.session?.user;
+    
+}
