@@ -12,13 +12,13 @@ const Auth = () => {
 
 
   return (
-    <div className="h-screen w-full flex flex-col gap-4 justify-center items-center p-4 sm:px-16">
+    <div className="min-h-screen w-full flex flex-col gap-4 justify-center items-center p-4 sm:px-16">
 
       {(longUrl)
         ? <div  className="text-2xl font-semibold">Please login to continue!</div>
         : <h2 className="text-2xl font-semibold">Login/Signup</h2>
       }
-         <div className="h-92 w-full sm:w-2/3 lg:w-[400px]">
+         <div className="h-full w-full sm:w-2/3 lg:w-[400px]">
           <Tabs defaultValue="login" className="w-full">
             <TabsList className="w-full h-12">
               <TabsTrigger className="w-1/2" value="login">Login</TabsTrigger>

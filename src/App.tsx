@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard"
 import Auth from "./pages/Auth"
 import LinkPage from "./pages/LinkPage"
 import Redirect from "./pages/Redirect"
+import { UrlContextProvider } from "./Context/UrlContext"
 
 
 const router = createBrowserRouter([
@@ -24,8 +25,10 @@ const router = createBrowserRouter([
 
 function App() {
 
-  return (
-    <RouterProvider router={router}/> 
+  return (          // wrapping whole app inside the context provider
+    <UrlContextProvider>               
+      <RouterProvider router={router}/> 
+    </UrlContextProvider>
   )
 }
 

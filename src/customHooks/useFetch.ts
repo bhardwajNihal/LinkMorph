@@ -1,29 +1,27 @@
 // a custom hook to wrap all the fetch logic and related states
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export function useFetch<T, Args extends unknown[]>(
-    cb : (options : unknown, ...args: Args) => Promise<T>,
-    options : unknown
-){
+  cb: (...args: Args) => Promise<T>,
+) {
+  // defining states
+  const [data, setData] = useState<T | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
-    // defining states 
-    const [data,setData] = useState<T|null>(null);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error|null>(null);
-
-    async function callCb(...args:Args){
-        setLoading(true);
-        try {
-            const res = await cb(options,...args);
-            setData(res);
-        } catch (err) {
-            setError(err instanceof Error ? err : new Error(String(err)));
-        } finally{
-            setLoading(false);
-        }
+  const callCb =  useCallback(async (...args: Args) => {        // makes the fetch stable, can now be safely used in the useEffect, avoiding unnecessary rerenders
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await cb(...args);
+      setData(prevData => JSON.stringify(prevData) !== JSON.stringify(res) ? res : prevData);  // ✅ Prevent unnecessary updates
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error(String(err)));
+    } finally {
+      setLoading(false);
     }
+  },[cb])
 
-    return {data,loading,error, callCb}
-
+  return { data, loading, error, callCb };
 }

@@ -17,8 +17,8 @@ const Applayout = () => {
             <footer
                 className="h-16 text-sm border-t border-gray-700 flex justify-center items-center text-muted-foreground gap-4 md:gap-8 ">
                 <p>Made with ❤️ and learnings by Nihal Bhardwaj.</p>
-                <a href=""><SiGithub className="text-lg" /></a>
-                <a href=""><FaXTwitter className="text-lg" /></a>
+                <a href=""  target="_blank" rel="noopener noreferrer"><SiGithub className="text-lg" /></a>
+                <a href=""  target="_blank" rel="noopener noreferrer"><FaXTwitter className="text-lg" /></a>
             </footer>
 
         </div>
