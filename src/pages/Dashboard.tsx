@@ -1,15 +1,21 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom"
+import { getCurrentUser } from "../db/userAuth";
 
-import { useContext, useEffect } from "react"
-import { urlContext} from "../Context/UrlContext"
 
 const Dashboard = () => {
 
-  const userContext = useContext(urlContext)
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(userContext);
-    
-  },[userContext])
+  async function checkIfAuthenticated(){
+    const user = await getCurrentUser();
+    if(!user) navigate("/");
+  }
+
+  useEffect(()=>{
+    checkIfAuthenticated()
+  })
+
 
   return (
     <div>Dashboard</div>

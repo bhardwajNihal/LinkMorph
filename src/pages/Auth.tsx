@@ -1,7 +1,9 @@
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
 import LoginCard from "../components/LoginCard";
 import SignUpCard from "../components/SignUpCard";
+import { getCurrentUser } from "../db/userAuth";
+import { useEffect } from "react";
 
 
 const Auth = () => {
@@ -9,6 +11,18 @@ const Auth = () => {
   // check if url exists 
   const [params] = useSearchParams();
   const longUrl = params.get('createNew');
+
+  // check if user is already logged in , in case, redirect to dashboard
+  const navigate = useNavigate();
+
+  async function checkIfAuthenticated(){
+    const user = await getCurrentUser();
+    if(user) navigate("/dashboard");
+  }
+
+  useEffect(()=>{
+    checkIfAuthenticated()
+  })
 
 
   return (

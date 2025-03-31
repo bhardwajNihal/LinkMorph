@@ -1,13 +1,23 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
 import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom";
+import { getCurrentUser } from "../db/userAuth";
 
 
 const LandingPage = () => {
 
   const [inputUrl, setInputUrl] = useState("");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  
+    async function checkIfAuthenticated(){
+      const user = await getCurrentUser();
+      if(user) navigate("/dashboard");
+    }
+  
+    useEffect(()=>{
+      checkIfAuthenticated()
+    })
 
   function handleSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

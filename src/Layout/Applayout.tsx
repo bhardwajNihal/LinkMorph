@@ -10,7 +10,7 @@ const Applayout = () => {
             
             <Header/>
 
-            <main>
+            <main className="px-4">
                 <Outlet />
             </main>
 

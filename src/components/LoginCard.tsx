@@ -1,16 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ErrorComp } from "./Error";
 import * as yup from "yup";
 import { AuthorizeLogin } from "../db/userAuth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {ClipLoader} from "react-spinners"
-import { useFetch } from "../customHooks/useFetch";
 
 const LoginCard = () => {
 
     const navigate = useNavigate()
     const [errors, setErrors] = useState<Record<string,string>>({});
-    // const [isAuthenticating, setIsauthenticating] = useState(false)
+    const [loading, setLoading] = useState<boolean>(false);
     const [searchParams] = useSearchParams();
     const longUrl = searchParams.get("createNew");
     const [formData, setFormData] = useState({
@@ -23,34 +22,34 @@ const LoginCard = () => {
         setFormData((prevState) => ({ ...prevState, [name]: value }))
     }
 
-    //calling the custom hook to auth login
-    const { data,error:loginError,loading,callCb:login} =  useFetch(AuthorizeLogin);
-
-    useEffect(()=>{
-        if(data && !loginError){
-            if(longUrl) navigate(`/dashboard?createNew=${longUrl}`);
-            else navigate("/dashboard");
-        }
-        
-    },[data,loginError,longUrl,navigate])
-
     async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        // console.log(formData);
-
+        e.preventDefault();
         setErrors({});
+        setLoading(true);
+
+
         try {
             const inputSchema = yup.object().shape({
                 email : yup.string().required("Email is required!").email("Invalid Email format!"),
                 password : yup.string().required("Password is required!").min(6, "Password must have atleast 6 characters!")
             })
             
+            // validate input
             await inputSchema.validate(formData, {abortEarly:false})
-            // const response = await AuthorizeLogin(formData);
-            // console.log(response);
 
-            // calling the callback login function provided by useFetch
-            await login(formData)
+            //once input is validate, log in the user
+            
+            const loggedIn = await AuthorizeLogin(formData);
+
+            if(loggedIn.error){
+                setErrors({authError:"Invalid credentials!"});
+                setLoading(false);
+                return;
+            }
+
+            // if login is successful and error is not thrown, simply navigate the user to the dashboard
+            if(longUrl) navigate(`/dashboard?createNew=${longUrl}`);
+            else navigate("/dashboard");
             
 
         } catch (e) {
@@ -61,7 +60,11 @@ const LoginCard = () => {
                 })
                 setErrors(newErrors);
             }
-            // else setErrors({"authError" : "Invalid credentials!"});
+            else {
+                setErrors({ authError: "Something went wrong! Please try again." });
+            }
+        } finally{
+            setLoading(false);
         }
 
     }
@@ -72,7 +75,7 @@ const LoginCard = () => {
             className="w-full border border-gray-700 rounded-lg flex flex-col p-6 gap-4"
             onSubmit={handleLogin}>
                 <h2 className="text-center">Continue <b>Login</b><br /> <span className="text-gray-500">If already registered!</span></h2>
-            <div className="text-center">{loginError && <ErrorComp message={loginError.message} /> }</div>
+            <div className="text-center">{errors.authError && <ErrorComp message={errors.authError} /> }</div>
             <input
                 name="email"
                 value={formData.email}
@@ -89,10 +92,10 @@ const LoginCard = () => {
             {errors.password && <ErrorComp message={errors.password} />}
             <button
                 disabled={loading}
-                className="w-full bg-blue-600 py-3 px-6 rounded"
+                className={`w-full py-3 px-6 rounded ${(loading) ? "bg-gray-800":"bg-blue-600"}`}
                 type='submit'>{loading ? <ClipLoader size={"15px"}/> : "submit"}</button>
         </form>
     )
 }
 
-export default LoginCard
+export default LoginCard;
