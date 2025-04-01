@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"
 import { getCurrentUser } from "../db/userAuth";
-import { Copy, Download, Search, Trash } from "lucide-react";
+import { Search } from "lucide-react";
 import { getAllUrls } from "../db/getUrls";
 import { getclickInfoForAllUrls } from "../db/getClicks";
+import UrlCard from "../components/UrlCard";
 
-
-interface urlType {
+export interface urlType {
   created_at: string;
   id: number;
   user_id: string;
@@ -62,7 +62,7 @@ const Dashboard = () => {
   useEffect(() => {       //Since every word includes an empty string (""), all links pass the filter initially
     const filteredArr = urlsInfo.filter((url => url?.title.toLowerCase().includes(query.toLowerCase())));
     setFilteredurls(filteredArr);
-  }, [query,urlsInfo])
+  }, [query, urlsInfo])
 
 
   return (
@@ -98,26 +98,21 @@ const Dashboard = () => {
 
       <div className="h-fit linksList flex flex-col gap-4 h-fit w-full p-2 mt-4 ">
 
-        {(filteredurls.length>0) ?  filteredurls.map((url) =>
-          <div key={url.id} className="linkCard border border-gray-700 h-32 p-2 flex items-center gap-2 md:gap-4 relative">
-            <div className="qrImage h-full w-[20%] md:w-[15%] lg:w-[10%] flex items-center">
-              <img className="h-full w-full object-contain" src={url.qr_code} alt="" />
-            </div>
+        {(filteredurls.length > 0)
+          ? filteredurls.map((url) =>
+            <UrlCard
+              id={url.id}
+              key={url.id}
+              title={url.title}
+              original_url={url.original_url}
+              short_url={url.short_url}
+              custom_url={url.custom_url}
+              qr_code={url.qr_code}
+              created_at={url.created_at}
+              setUrlsInfo={setUrlsInfo}
 
-            <div className="info-part h-full w-[80%] md:w-[85%] lg:w-[90%]">
-              <h1 className="text-xl font-bold truncate max-w-[60%]">{url.title}</h1>
-              <h2 className="text-lg sm:text-xl text-blue-600 truncate max-w-[90%]">https://LinkMorph/{url.short_url}</h2>
-              <h3 className="text-gray-500 text-sm md:text-normal truncate max-w-[90%] ">{url.original_url}</h3>
-              <h4 className="text-xs md:text-sm text-gray-600 mt-2">{new Date(url.created_at).toLocaleString()}</h4>
-            </div>
-
-            <div className="options absolute top-0 right-0 m-4 flex gap-2 sm:gap-4">
-              <Copy size={"17px"} className="text-gray-500 text-sm hover:text-white cursor-pointer" />
-              <Download size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />
-              <Trash size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />
-            </div>
-          </div>)
-          : <div className="text-muted-foreground text-center mt-4">No such Links found!</div>  
+            />)
+          : <div className="text-muted-foreground text-center mt-4">No Links found!</div>
         }
       </div>
     </div>

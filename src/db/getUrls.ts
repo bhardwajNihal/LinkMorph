@@ -10,4 +10,15 @@ import supabase from "./supabaseSetup";
 
         if(error) throw new Error(error.message);
         return data;
-    }   
+    }
+
+    export async function deleteUrl(url_id:number) {
+        
+        const {data,error} = await supabase
+        .from("urls")
+        .delete()
+        .eq("id",url_id);
+
+        if(error) throw new Error(error.message);
+        return data;
+    }
