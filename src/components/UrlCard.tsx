@@ -1,8 +1,9 @@
 import { Copy, Download, Trash2 } from 'lucide-react'
-import { deleteUrl } from '../db/getUrls';
+import { deleteUrl } from '../db/UrlsApi';
 import React, { useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { urlType } from '../pages/Dashboard';
+import {toast} from "react-hot-toast"
 
 interface urlProps {
   id: number;
@@ -16,7 +17,7 @@ interface urlProps {
 }
 
 
-const UrlCard = ({id, title, original_url, short_url, custom_url, qr_code, created_at,setUrlsInfo }: urlProps) => {
+const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, created_at, setUrlsInfo }: urlProps) => {
 
   const [isDeleting, setIsdeleting] = useState(false)
 
@@ -50,16 +51,19 @@ const UrlCard = ({id, title, original_url, short_url, custom_url, qr_code, creat
     }
   }
 
-  async function handleDeleteUrl(url_id:number){
+  async function handleDeleteUrl(url_id: number) {
     setIsdeleting(true);
-    const data = await deleteUrl(url_id);     // just deletes the link from the db, but the old state is not changed
-    setUrlsInfo((prevUrls) => prevUrls.filter(url => url.id !== url_id))
-    console.log(data);  
-    setIsdeleting(false);  
+    await deleteUrl(url_id);     // just deletes the link from the db, but the old state is not changed
+    setUrlsInfo((prevUrls) => prevUrls.filter(url => url.id !== url_id))  //updates the state and hence the ui
+    setIsdeleting(false);
+    toast.success("Url deleted!",{
+      position: "bottom-center"
+    })
   }
 
   return (
     <div className="linkCard border border-gray-700 h-32 p-2 flex items-center gap-2 md:gap-4 relative">
+
       <div className="qrImage h-full w-[20%] md:w-[15%] lg:w-[10%] flex items-center">
         <img className="h-full w-full object-contain" src={qr_code} alt="QrCode" />
       </div>
@@ -77,14 +81,19 @@ const UrlCard = ({id, title, original_url, short_url, custom_url, qr_code, creat
         <Copy
           size={"17px"}
           className="text-gray-500 text-sm hover:text-white cursor-pointer"
-          onClick={() => navigator.clipboard.writeText(custom_url ? custom_url : short_url)}
+          onClick={() => {
+            navigator.clipboard.writeText(`https://linkmorph/${custom_url ? custom_url : short_url}`)
+            toast.success("Copied to Clipboard!", {position:"bottom-center"})
+          }}
         />
         <Download
           onClick={handleDownload}
           size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />
-        {isDeleting ? <ClipLoader color='gray' size={"15px"}/> :<Trash2 
-        onClick={() => handleDeleteUrl(id)}
-        size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />}
+        {isDeleting
+          ? <ClipLoader color='gray' size={"15px"} />
+          : <Trash2
+            onClick={() => handleDeleteUrl(id)}
+            size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />}
       </div>
     </div>
   )

@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { AuthorizeLogin } from "../db/userAuth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {ClipLoader} from "react-spinners"
+import toast from "react-hot-toast";
 
 const LoginCard = () => {
 
@@ -50,7 +51,7 @@ const LoginCard = () => {
             // if login is successful and error is not thrown, simply navigate the user to the dashboard
             if(longUrl) navigate(`/dashboard?createNew=${longUrl}`);
             else navigate("/dashboard");
-            
+            toast.success("logged In successfully!", {position:"bottom-left"})
 
         } catch (e) {
             if(e instanceof yup.ValidationError){
@@ -92,7 +93,7 @@ const LoginCard = () => {
             {errors.password && <ErrorComp message={errors.password} />}
             <button
                 disabled={loading}
-                className={`w-full py-3 px-6 rounded ${(loading) ? "bg-gray-800":"bg-blue-600"}`}
+                className={`w-full py-3 px-6 rounded hover:bg-blue-700 cursor-pointer ${(loading) ? "bg-gray-800":"bg-blue-600"}`}
                 type='submit'>{loading ? <ClipLoader size={"15px"}/> : "submit"}</button>
         </form>
     )

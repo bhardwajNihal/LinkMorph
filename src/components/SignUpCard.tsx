@@ -4,6 +4,7 @@ import * as yup from "yup"
 import { ClipLoader } from "react-spinners";
 import { signup } from "../db/userAuth";
 import { ErrorComp } from "./Error";
+import toast from "react-hot-toast";
 
 const SignUpCard = () => {
 
@@ -40,8 +41,8 @@ const SignUpCard = () => {
         setInputerrors((prev) => ({ ...prev, profile_pic: "Only images are allowed!" }));
         return;
       }
-      if (file.size > 10 * 1024 * 1024) {
-        setInputerrors((prev) => ({ ...prev, profile_pic: "File size should be less than 10MB!" }));
+      if (file.size > 5 * 1024 * 1024) {
+        setInputerrors((prev) => ({ ...prev, profile_pic: "File size should be less than 5mb!" }));
         return;
       }
       setInputerrors((prev) => ({ ...prev, profile_pic: "" })); // Clear previous errors
@@ -61,7 +62,7 @@ const SignUpCard = () => {
         email: yup.string().required("Email is required!").email("Invalid Email format!"),
         password: yup.string().required("Password is required!").min(6, "Password must have atleast 6 characters!"),
         cfm_password: yup.string()
-          .oneOf([yup.ref("password")], "Passwords must match!")
+          .oneOf([yup.ref("password")], "Passwords didn't match!")
           .required("Password is required!"),
         profile_pic: yup
           .mixed()
@@ -94,7 +95,7 @@ const SignUpCard = () => {
         else navigate("/dashboard");
       }
 
-      console.log("user signed up !");
+      toast.success("Signed Up successfully!", {position:"bottom-left"})
       
 
     } catch (e) {
@@ -171,7 +172,7 @@ const SignUpCard = () => {
       {(Inputerrors.profile_pic) && <ErrorComp message={"profile pic is needed!"}/>}
 
       <button
-        className={`w-full py-3 px-6 rounded ${(loading) ? "bg-gray-800" : "bg-blue-600"}`}
+        className={`w-full py-3 px-6 rounded  hover:bg-blue-700 cursor-pointer  ${(loading) ? "bg-gray-800" : "bg-blue-600"}`}
         disabled={loading}
         type='submit'>{loading ? <ClipLoader size={"15px"} /> : <span>Create Account</span>}</button>
     </form>

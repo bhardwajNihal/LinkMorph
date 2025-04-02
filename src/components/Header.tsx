@@ -1,6 +1,5 @@
 import { MdOutlineContentCut } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar"
 import { Link2Icon, LogOut } from "lucide-react";
@@ -8,6 +7,7 @@ import { getCurrentUser, logout } from "../db/userAuth";
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { BarLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 const Header = () => {
 
@@ -16,13 +16,12 @@ const Header = () => {
     const [userData, setUserData] = useState<User>()
     const [isloggingOut, setIsloggingOut] = useState(false);
 
-    async function checkIfAuthenticated() {
-        const user = await getCurrentUser();
-        setUserData(user?.user)
-        if (user) setIsAuthenticated(true)
-    }
-
     useEffect(() => {
+        async function checkIfAuthenticated() {
+            const user = await getCurrentUser();
+            setUserData(user?.user)
+            if (user) setIsAuthenticated(true)
+        }
         checkIfAuthenticated()
     })
 
@@ -35,13 +34,12 @@ const Header = () => {
         setIsAuthenticated(false);
         setIsloggingOut(false);
         navigate("/");
-
+        toast.success("Logged Out Successfully!",{position:"bottom-left"})
     }
 
 
     return (
         <div className="h-16 px-4 w-full border-b border-gray-700 flex justify-between items-center relative">
-
             <Link to={"/"}>
                 <div className="logo flex justify-center items-center w-fit font-bold md:text-lg tracking-tighter">
                     <span className="mb-1 mr-[-2px] text-blue-500">Link</span>
@@ -53,7 +51,7 @@ const Header = () => {
 
             <div className="options">
                 {(!isAuthenticated)
-                    ? <div><Button onClick={() => navigate("/auth")} size={"sm"}>Login</Button></div>
+                    ? <div><button className="bg-blue-600 p-2 px-6 rounded cursor-pointer hover:bg-blue-700" onClick={() => navigate("/auth")}>Login</button></div>
                     : <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Avatar>

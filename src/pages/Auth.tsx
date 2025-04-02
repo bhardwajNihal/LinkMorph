@@ -17,7 +17,10 @@ const Auth = () => {
 
   async function checkIfAuthenticated(){
     const user = await getCurrentUser();
-    if(user) navigate("/dashboard");
+    if(user) {
+      if(longUrl) navigate(`/dashboard?createNew=${longUrl}`)
+      else navigate("/dashboard");
+    }
   }
 
   useEffect(()=>{

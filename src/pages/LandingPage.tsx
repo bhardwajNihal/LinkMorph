@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion"
-import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../db/userAuth";
+import { FaLink } from "react-icons/fa";
 
 
 const LandingPage = () => {
@@ -28,6 +28,8 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen w-full lg:w-2/3 mx-auto px-4">
 
+      <div className="fixed top-0 left-0 z-[-10] h-screen w-full flex justify-center items-center "><FaLink size={"800px"} color="#101752"/></div>
+      <div className="fixed top-0 left-0 z-[-5] h-screen w-full backdrop-blur-xl sm:backdrop-blur-2xl"></div>
       <div className="hero-section h-svh w-full text-center mx-auto flex flex-col items-center justify-center text-gray-200">
         <h2 className="text-3xl md:text-4xl font-bold mb-8"> The Smartest Way to Shorten your loooooong URLs, with</h2>
         <h1 className="text-5xl md:text-7xl font-black"><span className="text-blue-500">Link</span><span>Morph</span></h1>
@@ -36,13 +38,13 @@ const LandingPage = () => {
         <div className="w-full">
           <form className="w-full sm:flex items-center w-full gap-2" onSubmit={handleSubmit}>
             <input
-            className="h-12 w-full sm:w-5/6 bg-gray-800 placeholder:px-4 rounded-lg" 
+            className="h-12 w-full sm:w-5/6 border border-gray-500 backdrop-blur-3xl placeholder:px-4 rounded" 
             type="url" 
             placeholder="Type you long url..."
             onChange={e => setInputUrl(e.target.value)} 
             value={inputUrl}
             />
-            <Button type="submit" className="h-12 w-full mt-4 sm:mt-0 sm:w-1/6">Shorten!</Button>
+            <button type="submit" className="bg-blue-600 rounded h-12 w-full mt-4 sm:mt-0 sm:w-1/6">Shorten!</button>
           </form>
         </div>
       </div>
