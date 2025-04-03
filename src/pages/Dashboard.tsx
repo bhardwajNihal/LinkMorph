@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { getCurrentUser } from "../db/userAuth";
 import { Search } from "lucide-react";
 import { getAllUrls } from "../db/UrlsApi";
-import { getclickInfoForAllUrls } from "../db/getClicks";
+import { getclickInfoForAllUrls } from "../db/ClicksApi";
 import UrlCard from "../components/UrlCard";
 import CreateUrlPopUp from "../components/CreateUrlPopUp";
 import { ClipLoader } from "react-spinners";
@@ -19,14 +19,13 @@ export interface urlType {
   qr_code: string;
 }
 
-interface clickType {
+export interface clickType {
   id: number
   url_id: number;
   city: string;
   country: string;
   created_at: string;
   device: string;
-
 }
 
 const Dashboard = () => {

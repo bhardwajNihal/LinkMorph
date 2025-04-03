@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom"
-import { getOriginalUrl, storeClicksInfoAndRedirect } from "../db/UrlsApi";
+import { getOriginalUrl } from "../db/UrlsApi";
+
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { storeClicksInfoAndRedirect } from "../db/ClicksApi";
 
 
 const Redirect = () => {
@@ -10,6 +12,7 @@ const Redirect = () => {
   // get the id from the query params
   const queryParam = useParams()
   const short_id = queryParam.id;
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate()
 
@@ -22,15 +25,16 @@ const Redirect = () => {
         const { id, original_url } = await getOriginalUrl(short_id!);
 
         // Storing click info (for analytics, but didn't block redirection)
-        storeClicksInfoAndRedirect(id, original_url).catch((err) =>
+        storeClicksInfoAndRedirect(id, original_url)
+        .catch((err) =>
           console.error("Error storing click info:", err)
         );
-        // Redirecting immediately
+        // Redirecting irrespective of clicks api fails, for better ux, serving the core purpose.
         window.location.href = original_url;
 
       } catch (error) {
-        console.error("Error Redirecting to the original Url!", error);
-        toast.error("Can't fetch Original Url!", { position: "top-center" });
+        console.error("Redirection Error : ", error);
+        toast.error("Can't fetch the Original Url!", { position: "top-center" });
         navigate("/");
       } finally {
         setLoading(false);

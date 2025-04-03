@@ -73,7 +73,7 @@ const LandingPage = () => {
               How does the LinkMorph URL shortener works?
             </AccordionTrigger>
             <AccordionContent>
-              When you enter a long URL, our system generates a shorter version of
+              When you enter a long URL, my app generates a shorter version of
               that URL. This shortened URL redirects to the original long URL when
               accessed.
             </AccordionContent>
@@ -83,8 +83,8 @@ const LandingPage = () => {
               Do I need an account to use the app?
             </AccordionTrigger>
             <AccordionContent>
-              Yes. Creating an account allows you to manage your URLs, view
-              analytics, and customize your short URLs.
+              <b>No</b> - for using the shorter link and to be redirected to the original Url. <br />
+              <b>Yes</b> - for managing your URLs, view analytics, and customize your short URLs.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem className="py-2" value="item-5">
