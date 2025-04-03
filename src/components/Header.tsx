@@ -42,7 +42,7 @@ const Header = () => {
         <div className="h-16 px-4 w-full border-b border-gray-700 flex justify-between items-center relative">
             <Link to={"/"}>
                 <div className="logo flex justify-center items-center w-fit font-bold md:text-lg tracking-tighter">
-                    <span className="mb-1 mr-[-2px] text-blue-500">Link</span>
+                    <span className="mb-1 mr-[-2px] text-blue-500">link</span>
                     <span className="text-3xl md:text-4xl"><MdOutlineContentCut /></span>
                     <span className="text-white mb-1 ml-[-10px]">morph</span>
                 </div>
@@ -62,7 +62,9 @@ const Header = () => {
                         <DropdownMenuContent>
                             <DropdownMenuLabel>{userData?.user_metadata.username}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem><Link2Icon /> My links</DropdownMenuItem>
+                            <DropdownMenuItem
+                            onClick={() => navigate("/dashboard")}
+                            ><Link2Icon /> My links</DropdownMenuItem>
                             <DropdownMenuItem
                             onClick={handleLogout}
                                 className="flex justify-start items-center">

@@ -28,12 +28,13 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen w-full lg:w-2/3 mx-auto px-4">
 
-      <div className="fixed top-0 left-0 z-[-10] h-screen w-full flex justify-center items-center "><FaLink size={"800px"} color="#101752"/></div>
+      <div className="fixed top-0 left-0 z-[-10] h-screen w-full flex justify-center items-center overflow-hidden object-cover "><FaLink size={"800px"} color="#101752"/></div>
       <div className="fixed top-0 left-0 z-[-5] h-screen w-full backdrop-blur-xl sm:backdrop-blur-2xl"></div>
-      <div className="hero-section h-svh w-full text-center mx-auto flex flex-col items-center justify-center text-gray-200">
+
+      <div className="hero-section h-svh w-full text-center mx-auto flex flex-col items-center justify-center text-gray-1 00">
         <h2 className="text-3xl md:text-4xl font-bold mb-8"> The Smartest Way to Shorten your loooooong URLs, with</h2>
-        <h1 className="text-5xl md:text-7xl font-black"><span className="text-blue-500">Link</span><span>Morph</span></h1>
-        <h1 className="text-lg md:text-xl font-semibold text-gray-400 mb-12 md:mt-[-8px] mr-5">Your URLs, But on a Diet.</h1>
+        <h1 className="text-5xl md:text-7xl font-black"><span className="text-blue-500">link</span><span>Morph</span></h1>
+        <h1 className="text-lg md:text-xl font-semibold text-gray-400 mb-12 md:mt-[-8px] mr-7">Your URLs, but on a Diet.</h1>
 
         <div className="w-full">
           <form className="w-full sm:flex items-center w-full gap-2" onSubmit={handleSubmit}>
@@ -44,7 +45,7 @@ const LandingPage = () => {
             onChange={e => setInputUrl(e.target.value)} 
             value={inputUrl}
             />
-            <button type="submit" className="bg-blue-600 rounded h-12 w-full mt-4 sm:mt-0 sm:w-1/6">Shorten!</button>
+            <button type="submit" className="bg-blue-600 rounded h-12 w-full mt-4 sm:mt-0 sm:w-1/6 hover:bg-blue-700 cursor-pointer">Morph It!</button>
           </form>
         </div>
       </div>

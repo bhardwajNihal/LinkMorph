@@ -86,6 +86,9 @@ const CreateUrlPopUp: React.FC<CreateUrlPopUpProps> = ({ setUrlsInfo }) => {
                     position: 'bottom-center'
                 }
             )
+            await new Promise((resolve) => setTimeout(resolve,100))
+            navigate(`/link/${newUrl.id}`)
+        
 
 
         } catch (e) {
