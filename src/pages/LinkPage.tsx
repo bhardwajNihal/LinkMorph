@@ -205,7 +205,7 @@ const LinkPage = () => {
 
           <div className="details mt-4">
             <a 
-            href={`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}    //add post deployment like
+            href={`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}  
             className="text-xl md:text-2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit"
             >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
             <br />

@@ -83,7 +83,7 @@ const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, crea
         <div className='tracking-tight'>
           <h1
             className="text-xl font-bold truncate max-w-[60%] ">{title}</h1>
-          <h2 className="text-lg sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit">{`https://LinkMorph/${custom_url ? custom_url : short_url}`}</h2>
+          <h2 className="text-lg sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit">{`https://linkmorph.vercel.app/${custom_url ? custom_url : short_url}`}</h2>
           <h3 className="text-gray-500 text-sm md:text-normal truncate max-w-[90%] hover:underline cursor-pointer w-fit">{original_url}</h3>
         </div>
         <h4 className="text-xs md:text-sm text-gray-600 mt-2">{new Date(created_at).toLocaleDateString()}</h4>
