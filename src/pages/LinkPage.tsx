@@ -4,7 +4,7 @@ import { clickType, urlType } from "./Dashboard";
 import { deleteUrl, getUrl } from "../db/UrlsApi";
 import { getCurrentUser } from "../db/userAuth";
 import { getClickInfoForGivenUrl } from "../db/ClicksApi";
-import { Download, Share, Trash2 } from "lucide-react";
+import { Download, Share2, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, PieChart, Pie, Legend, Cell } from "recharts"
@@ -176,7 +176,7 @@ const LinkPage = () => {
         <h2 className="text-2xl md:text-3xl font-semibold truncate max-w-[50%]">{urlData?.title}</h2>
 
         <div className="options flex gap-4 ">
-          <Share
+          <Share2
             size={"17px"}
             className="text-gray-500 text-sm hover:text-white cursor-pointer"
             onClick={() => {

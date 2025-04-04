@@ -42,4 +42,15 @@
   - fetch urls and clicks info
   - dashboard component to display urls and clicks info
   - added search filter to links
+  - completed url card component
+
+14. done with share, delete and download functionality
+
+15. finally addde details page for the urls
+  - added stats, for devices and location
+
+16. fixed navigation issues post deployment
+
+  fix : added vercel.json to the root dir.
+    - added configurations to it.
 

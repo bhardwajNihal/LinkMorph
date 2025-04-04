@@ -23,7 +23,10 @@ const Redirect = () => {
 
         //fetch original url data, given the short/custom urls id
         const { id, original_url } = await getOriginalUrl(short_id!);
-
+        console.log(id, original_url);
+        console.log("redirecting...");
+        
+        
         // Storing click info (for analytics, but didn't block redirection)
         storeClicksInfoAndRedirect(id, original_url)
         .catch((err) =>

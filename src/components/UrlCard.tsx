@@ -1,4 +1,4 @@
-import { Download, Share, Trash2 } from 'lucide-react'
+import { Download, Share2, Trash2 } from 'lucide-react'
 import { deleteUrl } from '../db/UrlsApi';
 import React, { useState } from 'react';
 import { BarLoader, ClipLoader } from 'react-spinners';
@@ -90,7 +90,7 @@ const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, crea
       </div>
 
       <div className="options absolute top-0 right-0 m-4 flex gap-2 sm:gap-4">
-        <Share
+        <Share2
           size={"17px"}
           className="text-gray-500 text-sm hover:text-white cursor-pointer"
           onClick={() => {
