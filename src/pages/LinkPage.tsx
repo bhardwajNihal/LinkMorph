@@ -164,7 +164,7 @@ const LinkPage = () => {
   }, [clicksData])
 
   // colors for pie chart
-  const COLORS = ["#0096A7","#5F36B1", "#123A15"];
+  const COLORS = ["#0096A7", "#5F36B1", "#123A15"];
 
 
   if (loading) return <div className="h-screen w-full pt-12 text-center"><ClipLoader size={"25px"} color="white" /> Fetching Stats...</div>
@@ -205,13 +205,13 @@ const LinkPage = () => {
 
           <div className="details mt-4 w-full">
             <h2
-            className="text-xl md:text-2xl sm:text-xl text-blue-600 break-words hover:underline cursor-pointer"
+              className="text-xl md:text-2xl sm:text-xl text-blue-600 break-words hover:underline cursor-pointer"
             >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</h2>
             <br />
             <a
-            target="_blank"
-            href={urlData?.original_url} 
-            className="text-gray-400 mt-3 text-lg md:text-normal break-words hover:underline cursor-pointer"
+              target="_blank"
+              href={urlData?.original_url}
+              className="text-gray-400 mt-3 text-lg md:text-normal break-words hover:underline cursor-pointer"
             >{urlData?.original_url}</a>
             <h4>{urlData?.created_at ? <div className="mt-4"><span className="text-sm text-gray-500 mr-2">{new Date(urlData.created_at).toDateString()}</span><span className="text-xs text-gray-600">{new Date(urlData.created_at).toLocaleTimeString()}</span></div> : "No Date Provided!"}</h4>
           </div>
@@ -219,46 +219,53 @@ const LinkPage = () => {
         <div className="click-stats mb-8 w-full md:w-3/5 flex items-center flex-col gap-2">
 
           <div className="click-count h-16 flex px-4 justify-between items-end pl-4 pb-2 w-full border border-gray-800 rounded">
-            
+
             <div className="div className text-2xl font-semibold">Stats</div>
             <div>
-            <span className="text-lg text-gray-500">Total Clicks </span>
-            <span className="text-3xl font-semibold">{clicksData.length}</span>
+              <span className="text-lg text-gray-500">Total Clicks </span>
+              <span className="text-3xl font-semibold">{clicksData.length}</span>
             </div>
           </div>
 
           <div className="h-92 w-full border border-gray-800 rounded">
             <div className="text-xl font-semibold p-2">Top cities</div>
-            <ResponsiveContainer width={"100%"} height={"85%"}>
-              <BarChart data={barData}>
-                <XAxis dataKey="city" />
-                <YAxis />
-                <Tooltip contentStyle={{ color: "white", background: "black", borderRadius: "10px" }} />
-                <Bar dataKey="clicks" fill="#8884d8" />
-              </BarChart>
-            </ResponsiveContainer>
+            {barData.length > 0
+              ? <ResponsiveContainer width={"100%"} height={"85%"}>
+                <BarChart data={barData}>
+                  <XAxis dataKey="city" />
+                  <YAxis />
+                  <Tooltip contentStyle={{ color: "white", background: "black", borderRadius: "10px" }} />
+                  <Bar dataKey="clicks" fill="#8884d8" />
+                </BarChart>
+              </ResponsiveContainer>
+              : <div className="h-full w-full justify-center items-center text-muted">No Data available yet...</div>
+            }
           </div>
 
-          <div className="h-80 w-full border mt-2 border-gray-800 text-white rounded">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  nameKey="device"
-                  dataKey="number"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={90}
-                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`} // Only percentage
-                >
-                  {pieData.map((_,index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index]} /> // color to cells
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{borderRadius: "10px" }} />
-                <Legend verticalAlign="bottom" height={36} />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="h-92 w-full border mt-2 border-gray-800 text-white rounded">
+            <div className="text-xl font-semibold p-2">Common devices</div>
+            {pieData.length > 0
+              ? <ResponsiveContainer width="100%" height={"85%"}>
+                <PieChart>
+                  <Pie
+                    data={pieData}
+                    nameKey="device"
+                    dataKey="number"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={90}
+                    label={({ percent }) => `${(percent * 100).toFixed(1)}%`} // Only percentage
+                  >
+                    {pieData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index]} /> // color to cells
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ borderRadius: "10px" }} />
+                  <Legend verticalAlign="bottom" height={36} />
+                </PieChart>
+              </ResponsiveContainer>
+              : <div className="h-full w-full justify-center items-center text-muted">No Data available yet...</div>
+            }
           </div>
         </div>
 
