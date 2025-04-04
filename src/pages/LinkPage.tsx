@@ -4,9 +4,20 @@ import { clickType, urlType } from "./Dashboard";
 import { deleteUrl, getUrl } from "../db/UrlsApi";
 import { getCurrentUser } from "../db/userAuth";
 import { getClickInfoForGivenUrl } from "../db/ClicksApi";
-import { Copy, Divide, Download, Trash2 } from "lucide-react";
+import { Copy, Download, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
+import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, PieChart, Pie, Legend, Cell } from "recharts"
+
+
+interface BarDataType {
+  city: string;
+  clicks: number;
+}
+interface PieDataType {
+  device: string;
+  number: number;
+}
 
 const LinkPage = () => {
 
@@ -16,6 +27,9 @@ const LinkPage = () => {
   const [loading, setLoading] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
+
+  const [barData, setBarData] = useState<BarDataType[]>([]);
+  const [pieData, setPieData] = useState<PieDataType[]>([]);
 
   //fetch url, and clicks info on mount
   useEffect(() => {
@@ -56,18 +70,22 @@ const LinkPage = () => {
 
   async function handleDeleteUrl() {
     setIsDeleting(true);
-    await deleteUrl(Number(params.id));     // just deletes the link from the db, but the old state is not changed
-    setIsDeleting(false);
-    toast.success("Url deleted!", {
-      position: "bottom-center"
-    })
-    await new Promise((res) => setTimeout(res, 100));
-    navigate("/dashboard");
+    try {
+      await deleteUrl(Number(params.id));
+      toast.success("URL deleted!", { position: "bottom-center" });
+      await new Promise(res => setTimeout(res, 100))
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Error deleting URL:", error);
+      toast.error("Failed to delete URL!", { position: "bottom-center" });
+    } finally {
+      setIsDeleting(false);
+    }
   }
 
   async function handleDownload() {         // took the blob, approach, as some browsers blocks the download of files from another domain
     try {
-      if (!urlData) throw new Error("Can't fetch Qr code to download!");
+      if (!urlData?.qr_code) throw new Error("Can't fetch Qr code to download!");
       // fetch the image data from the qr_code url
       const ImgData = await fetch(urlData.qr_code);
 
@@ -96,8 +114,58 @@ const LinkPage = () => {
 
 
 
-  // prepare data for charts
-  // display charts
+  // preparing data for charts
+
+  //barchart
+  useEffect(() => {
+    function createChartData() {
+      const createdbarData = clicksData.reduce((acc, click) => {
+
+        const city = click.city
+        if (!acc[city]) {
+          acc[city] = { city, clicks: 1 }
+        }
+        else {
+          acc[city].clicks++;
+        }
+
+        return acc;
+      }, {} as Record<string, BarDataType>)
+
+      // console.log(createdbarData);
+      const barDataArr = Object.values(createdbarData).slice(0, 10) // take top 10 data
+      // console.log(barDataArr);
+
+      setBarData(barDataArr);
+    }
+    createChartData()
+  }, [clicksData])
+
+  //pie chart
+  useEffect(() => {
+    function createPieChartData() {
+
+      const createdPieData = clicksData.reduce((acc, click) => {
+
+        const device = click.device;
+        if (!acc[device]) {
+          acc[device] = { device, number: 1 }
+        }
+        else {
+          acc[device].number++;
+        }
+        return acc;
+      }, {} as Record<string, PieDataType>)
+
+      const createdPieDataArr = Object.values(createdPieData);
+      setPieData(createdPieDataArr)
+    }
+    createPieChartData()
+  }, [clicksData])
+
+  // colors for pie chart
+  const COLORS = ["#0096A7","#5F36B1", "#123A15"];
+
 
   if (loading) return <div className="h-screen w-full pt-12 text-center"><ClipLoader size={"25px"} color="white" /> Fetching Stats...</div>
 
@@ -137,23 +205,53 @@ const LinkPage = () => {
 
           <div className="details mt-4">
             <h2 className="text-xl md:2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit">{`https://LinkMorph/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</h2>
-            <h3 className="text-gray-400 mt-3 text-lg md:text-normal text-wrap hover:underline cursor-pointer w-fit">{urlData?.original_url}</h3>
+            <h3 className="text-gray-400 mt-3 text-lg md:text-normal break-words hover:underline cursor-pointer">{urlData?.original_url}</h3>
             <h4>{urlData?.created_at ? <div className="mt-4"><span className="text-sm text-gray-500 mr-2">{new Date(urlData.created_at).toDateString()}</span><span className="text-xs text-gray-600">{new Date(urlData.created_at).toLocaleTimeString()}</span></div> : "No Date Provided!"}</h4>
           </div>
         </div>
         <div className="click-stats mb-8 w-full md:w-3/5 flex items-center flex-col gap-2">
 
-            <div className="click-count h-16 flex gap-3 justify-start items-end pl-4 pb-2 w-full border border-gray-800 rounded">
+          <div className="click-count h-16 flex px-4 justify-between items-end pl-4 pb-2 w-full border border-gray-800 rounded">
+            
+            <div className="div className text-2xl font-semibold">Stats</div>
+            <div>
             <span className="text-lg text-gray-500">Total Clicks </span>
-            <span className="text-4xl font-semibold">{clicksData.length}</span>
+            <span className="text-3xl font-semibold">{clicksData.length}</span>
             </div>
-
-          <div className="h-64 w-full border border-gray-800 rounded">
-
           </div>
 
-          <div className="h-64 w-full border border-gray-800 rounded">
+          <div className="h-92 w-full border border-gray-800 rounded">
+            <div className="text-xl font-semibold p-2">Top cities</div>
+            <ResponsiveContainer width={"100%"} height={"85%"}>
+              <BarChart data={barData}>
+                <XAxis dataKey="city" />
+                <YAxis />
+                <Tooltip contentStyle={{ color: "white", background: "black", borderRadius: "10px" }} />
+                <Bar dataKey="clicks" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
 
+          <div className="h-80 w-full border mt-2 border-gray-800 text-white rounded">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  nameKey="device"
+                  dataKey="number"
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={90}
+                  label={({ percent }) => `${(percent * 100).toFixed(1)}%`} // Only percentage
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index]} /> // Assign colors properly
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={{borderRadius: "10px" }} />
+                <Legend verticalAlign="bottom" height={36} />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
