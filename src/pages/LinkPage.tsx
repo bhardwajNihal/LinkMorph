@@ -204,8 +204,16 @@ const LinkPage = () => {
           </div>
 
           <div className="details mt-4">
-            <h2 className="text-xl md:2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit">{`https://LinkMorph/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</h2>
-            <h3 className="text-gray-400 mt-3 text-lg md:text-normal break-words hover:underline cursor-pointer">{urlData?.original_url}</h3>
+            <a 
+            href="#"    //add post deployment like
+            className="text-xl md:text-2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit"
+            >{`https://LinkMorph/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
+            <br />
+            <a
+            target="_blank"
+            href={urlData?.original_url} 
+            className="text-gray-400 mt-3 text-lg md:text-normal break-words hover:underline cursor-pointer"
+            >{urlData?.original_url}</a>
             <h4>{urlData?.created_at ? <div className="mt-4"><span className="text-sm text-gray-500 mr-2">{new Date(urlData.created_at).toDateString()}</span><span className="text-xs text-gray-600">{new Date(urlData.created_at).toLocaleTimeString()}</span></div> : "No Date Provided!"}</h4>
           </div>
         </div>
@@ -244,8 +252,8 @@ const LinkPage = () => {
                   outerRadius={90}
                   label={({ percent }) => `${(percent * 100).toFixed(1)}%`} // Only percentage
                 >
-                  {pieData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index]} /> // Assign colors properly
+                  {pieData.map((_,index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index]} /> // color to cells
                   ))}
                 </Pie>
                 <Tooltip contentStyle={{borderRadius: "10px" }} />
