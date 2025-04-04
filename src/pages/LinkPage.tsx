@@ -4,7 +4,7 @@ import { clickType, urlType } from "./Dashboard";
 import { deleteUrl, getUrl } from "../db/UrlsApi";
 import { getCurrentUser } from "../db/userAuth";
 import { getClickInfoForGivenUrl } from "../db/ClicksApi";
-import { Copy, Download, Trash2 } from "lucide-react";
+import { Download, Share, Trash2 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
 import { BarChart, XAxis, YAxis, Tooltip, Bar, ResponsiveContainer, PieChart, Pie, Legend, Cell } from "recharts"
@@ -176,7 +176,7 @@ const LinkPage = () => {
         <h2 className="text-2xl md:text-3xl font-semibold truncate max-w-[50%]">{urlData?.title}</h2>
 
         <div className="options flex gap-4 ">
-          <Copy
+          <Share
             size={"17px"}
             className="text-gray-500 text-sm hover:text-white cursor-pointer"
             onClick={() => {
@@ -205,9 +205,9 @@ const LinkPage = () => {
 
           <div className="details mt-4">
             <a 
-            href="#"    //add post deployment like
+            href={`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}    //add post deployment like
             className="text-xl md:text-2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit"
-            >{`https://LinkMorph/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
+            >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
             <br />
             <a
             target="_blank"
