@@ -203,10 +203,10 @@ const LinkPage = () => {
             <h2 className="text-sm text-gray-600 px-6">Scan this QR code to reach the original Page!</h2>
           </div>
 
-          <div className="details mt-4">
+          <div className="details mt-4 w-full">
             <a 
             href={`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}  
-            className="text-xl md:text-2xl sm:text-xl text-blue-600 truncate max-w-[90%] hover:underline cursor-pointer w-fit"
+            className="text-xl md:text-2xl sm:text-xl text-blue-600 break-words hover:underline cursor-pointer"
             >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
             <br />
             <a
