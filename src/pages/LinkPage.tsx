@@ -238,7 +238,7 @@ const LinkPage = () => {
                   <Bar dataKey="clicks" fill="#8884d8" />
                 </BarChart>
               </ResponsiveContainer>
-              : <div className="h-full w-full justify-center items-center text-muted">No Data available yet...</div>
+              : <div className="text-center mt-24 justify-center items-center text-gray-800">No Data available yet...</div>
             }
           </div>
 
@@ -264,7 +264,7 @@ const LinkPage = () => {
                   <Legend verticalAlign="bottom" height={36} />
                 </PieChart>
               </ResponsiveContainer>
-              : <div className="h-full w-full justify-center items-center text-muted">No Data available yet...</div>
+              : <div className="text-center mt-24 justify-center items-center text-gray-800">No Data available yet...</div>
             }
           </div>
         </div>
