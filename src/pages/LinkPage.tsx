@@ -204,10 +204,10 @@ const LinkPage = () => {
           </div>
 
           <div className="details mt-4 w-full">
-            <a 
-            href={`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}  
+            <h2
+            onClick={() => navigate(`/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`)}
             className="text-xl md:text-2xl sm:text-xl text-blue-600 break-words hover:underline cursor-pointer"
-            >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</a>
+            >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</h2>
             <br />
             <a
             target="_blank"
