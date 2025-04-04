@@ -180,7 +180,7 @@ const LinkPage = () => {
             size={"17px"}
             className="text-gray-500 text-sm hover:text-white cursor-pointer"
             onClick={() => {
-              navigator.clipboard.writeText(`https://linkmorph/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`)
+              navigator.clipboard.writeText(`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`)
               toast.success("Copied to Clipboard!", { position: "bottom-center" })
             }}
           />
@@ -205,7 +205,6 @@ const LinkPage = () => {
 
           <div className="details mt-4 w-full">
             <h2
-            onClick={() => navigate(`/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`)}
             className="text-xl md:text-2xl sm:text-xl text-blue-600 break-words hover:underline cursor-pointer"
             >{`https://linkmorph.vercel.app/${urlData?.custom_url ? urlData.custom_url : urlData?.short_url}`}</h2>
             <br />
