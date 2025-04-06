@@ -20,19 +20,17 @@ const Redirect = () => {
     async function redirect() {
       setLoading(true)
       try {
-        console.log("On the redirect page!!!");
-        console.log("calling the calling clickInfo api!");
+        // console.log("On the redirect page!!!");
+        // console.log("calling the calling clickInfo api!");
         
         //fetch original url data, given the short/custom urls id
         const { id, original_url } = await getOriginalUrl(short_id!);
-        console.log(id, original_url);
-        console.log("redirecting...");
+        // console.log(id, original_url);
+        // console.log("redirecting...");
 
-
-        // Store Click Info **before** redirecting
-        console.log("Storing click info...");
-        await storeClicksInfoAndRedirect(id, original_url);
-        console.log("Click info stored! Redirecting now...");
+        // console.log("Storing click info...");
+        await storeClicksInfoAndRedirect(id);
+        // console.log("Click info stored! Redirecting now...");
         window.location.href = original_url;
 
       } catch (error) {

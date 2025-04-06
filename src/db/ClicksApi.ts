@@ -15,10 +15,10 @@ export async function getclickInfoForAllUrls(urlIds:number[]) {
 // api to store the clicks info, before redirecting to the original url page
 // ua-parser - gives the info about the device
 const parser = new UAParser();
-export async function storeClicksInfoAndRedirect(id: number, original_url: string) {   //the id,and original url returned from the previous api will be used here as params
+export async function storeClicksInfoAndRedirect(id: number) {
   try {
 
-    console.log("Inside the Api to store ClickInfo API.");
+    // console.log("Inside the Api to store ClickInfo API.");
     
     const response = parser.getResult();
     const device = response.device.type || "desktop";  // returns undefined for desktop in some cases, so to explicitely handle
@@ -30,7 +30,7 @@ export async function storeClicksInfoAndRedirect(id: number, original_url: strin
     const city = location.city;
     const country = location.country_name;
 
-    console.log("logging click data : ",city,country,device);
+    // console.log("logging click data : ",city,country,device);
     
 
     //  store it in the clicks db
@@ -40,12 +40,12 @@ export async function storeClicksInfoAndRedirect(id: number, original_url: strin
       country,
       device
     })
-
-    // finally, redirect the user to the original url page, once the click data is recorded
-    window.location.href = original_url;
+    // console.log("click info stored successfully!");
+    // It is not good practice to call window.location.href from inside an api function
+    // redirection should be handled by the component calling this function
 
   } catch (error) {
-    console.error("Error storing clicks Data !", error);
+    throw new Error(`Error storing clicks Data !,${error}`);
   }
 }
 
