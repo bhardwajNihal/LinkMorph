@@ -24,7 +24,8 @@ const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, crea
   const navigate = useNavigate()
   const [isNavigating, setIsNavigating] = useState(false);
 
-  async function handleDownload() {         // took the blob, approach, as some browsers blocks the download of files from another domain
+  async function handleDownload(e:React.MouseEvent<SVGElement>) {         // took the blob, approach, as some browsers blocks the download of files from another domain
+    e.stopPropagation()
     try {
       // fetch the image data from the qr_code url
       const ImgData = await fetch(qr_code);
@@ -93,7 +94,8 @@ const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, crea
         <Share2
           size={"17px"}
           className="text-gray-500 text-sm hover:text-white cursor-pointer"
-          onClick={() => {
+          onClick={(e:React.MouseEvent<SVGElement>) => {
+            e.stopPropagation()
             navigator.clipboard.writeText(`https://linkmorph.vercel.app/${custom_url ? custom_url : short_url}`)
             toast.success("Copied to Clipboard!", { position: "bottom-center" })
           }}
@@ -104,7 +106,10 @@ const UrlCard = ({ id, title, original_url, short_url, custom_url, qr_code, crea
         {isDeleting
           ? <ClipLoader color='gray' size={"15px"} />
           : <Trash2
-            onClick={() => handleDeleteUrl(id)}
+            onClick={(e:React.MouseEvent<SVGElement>) => {    // as click event is on a svg icon
+              e.stopPropagation();
+              handleDeleteUrl(id)
+            }}
             size={"17px"} className="text-gray-500 hover:text-white cursor-pointer" />}
       </div>
     </div>

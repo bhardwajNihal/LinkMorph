@@ -4,31 +4,30 @@ import { useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../db/userAuth";
 import { FaLink } from "react-icons/fa";
 
-
 const LandingPage = () => {
 
   const [inputUrl, setInputUrl] = useState("");
   const navigate = useNavigate();
-  
-    async function checkIfAuthenticated(){
-      const user = await getCurrentUser();
-      if(user) navigate("/dashboard");
-    }
-  
-    useEffect(()=>{
-      checkIfAuthenticated()
-    })
 
-  function handleSubmit(e:React.FormEvent<HTMLFormElement>) {
+  async function checkIfAuthenticated() {
+    const user = await getCurrentUser();
+    if (user) navigate("/dashboard");
+  }
+
+  useEffect(() => {
+    checkIfAuthenticated()
+  })
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if(inputUrl) navigate(`/auth?createNew=${inputUrl}`)
+    if (inputUrl) navigate(`/auth?createNew=${inputUrl}`)
   }
 
 
   return (
     <div className="min-h-screen w-full lg:w-2/3 mx-auto px-4">
 
-      <div className="fixed top-0 left-0 z-[-10] h-screen w-full flex justify-center items-center overflow-hidden object-cover "><FaLink size={"800px"} color="#101752"/></div>
+      <div className="fixed top-0 left-0 z-[-10] h-screen w-full flex justify-center items-center overflow-hidden object-cover "><FaLink size={"800px"} color="#101752" /></div>
       <div className="fixed top-0 left-0 z-[-5] h-screen w-full backdrop-blur-xl sm:backdrop-blur-2xl"></div>
 
       <div className="hero-section h-svh w-full text-center mx-auto flex flex-col items-center justify-center text-gray-1 00">
@@ -39,16 +38,52 @@ const LandingPage = () => {
         <div className="w-full">
           <form className="w-full sm:flex items-center w-full gap-2" onSubmit={handleSubmit}>
             <input
-            className="h-12 w-full sm:w-5/6 border border-gray-500 backdrop-blur-3xl placeholder:px-4 rounded" 
-            type="url" 
-            placeholder="Type you long url..."
-            onChange={e => setInputUrl(e.target.value)} 
-            value={inputUrl}
+              className="h-12 w-full sm:w-5/6 border border-gray-500 backdrop-blur-3xl placeholder:px-4 rounded"
+              type="url"
+              placeholder="Type you long url..."
+              onChange={e => setInputUrl(e.target.value)}
+              value={inputUrl}
             />
             <button type="submit" className="bg-blue-600 rounded h-12 w-full mt-4 sm:mt-0 sm:w-1/6 hover:bg-blue-700 cursor-pointer">Morph It!</button>
           </form>
         </div>
       </div>
+
+      <div className="features flex flex-col gap-16 mb-48">
+
+        <div className="qr h-fit w-full gap-8 py-8 flex flex-col md:flex-row justify-center items-center text-center md:text-start border border-gray-700 md:p-6 rounded-lg">
+          <div className="text h-full w-1/2 md:p-6 md:pt-12">
+            <h2 className="text-3xl font-bold">QR Code</h2>
+            <p className="text-lg text-gray-400">Genarated on the go. Just scan and reach to the original page.</p>
+          </div>
+          <div className="img h-full w-1/2 flex items-center justify-center">
+            <img className="h-36 w-36" src="/assets/Screenshot 2025-04-06 221508.png" alt="" />
+          </div>
+        </div>
+
+        <div className="location h-fit w-full gap-8 py-8 flex flex-col md:flex-row justify-center items-center text-center md:text-start border border-gray-700 md:p-6 rounded-lg">
+          <div className="img h-full w-3/5 flex items-center justify-center ">
+            <img className="h-full object-fit" src="/assets/Screenshot 2025-04-06 223828.png" alt="" />
+          </div>
+          <div className="text h-full w-1/2 md:p-6 md:pt-12">
+          <h2 className="text-3xl font-bold">Location Info</h2>
+          <p className="text-lg text-gray-400">Get stats about top cities, from where the click was initiated.</p>
+          </div>
+        </div>
+
+        <div className="device h-fit w-full gap-8 py-8 flex flex-col md:flex-row justify-center items-center text-center md:text-start border border-gray-700 md:p-6 rounded-lg">
+          <div className="text h-full w-1/2 md:p-6 md:pt-12">
+          <h2 className="text-3xl font-bold">Device Info</h2>
+          <p  className="text-lg text-gray-400">Which devices were most used. Help better understand the user's accessibility.</p>
+          </div>
+          <div className="img h-full p-4 flex items-center justify-center">
+            <img className="h-full object-cover" src="/assets/Screenshot 2025-04-06 223728.png" alt="" />
+          </div>
+        </div>
+
+
+      </div>
+
 
       <div className="accordians w-full border border-gray-700 rounded-lg px-4 mb-16">
         <Accordion type="single" collapsible className="w-full md:px-11">
