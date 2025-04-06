@@ -60,14 +60,6 @@ const LinkPage = () => {
     getStats()
   }, [navigate, params.id])
 
-
-  useEffect(() => {
-    console.log("url data : ", urlData);
-    console.log("clicks data : ", clicksData);
-
-
-  }, [urlData, clicksData])
-
   async function handleDeleteUrl() {
     setIsDeleting(true);
     try {

@@ -17,6 +17,9 @@ export async function getclickInfoForAllUrls(urlIds:number[]) {
 const parser = new UAParser();
 export async function storeClicksInfoAndRedirect(id: number, original_url: string) {   //the id,and original url returned from the previous api will be used here as params
   try {
+
+    console.log("Inside the Api to store ClickInfo API.");
+    
     const response = parser.getResult();
     const device = response.device.type || "desktop";  // returns undefined for desktop in some cases, so to explicitely handle
     
@@ -26,7 +29,8 @@ export async function storeClicksInfoAndRedirect(id: number, original_url: strin
     const location = await res.json();
     const city = location.city;
     const country = location.country_name;
-    console.log(city,country);
+
+    console.log("logging click data : ",city,country,device);
     
 
     //  store it in the clicks db
